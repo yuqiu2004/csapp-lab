@@ -143,7 +143,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return 2;
+  return ((~x)&y) & ((~y)&x);
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -152,8 +152,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-
-  return 2;
+  return 1 << 31;
 
 }
 //2
@@ -165,7 +164,14 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  /*
+  if x == 1<<31 - 1 return 1 else return 0
+  so it means operate param x then makes it to be 1 in case it equals to
+                    0111 1111 1111 1111 1111 1111 1111 1111
+  */
+  int var1 = !(x+2+x);
+	int var2 = !!(x+1);
+	return var1 & var2;
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -176,7 +182,16 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  /*
+  max constants 255 = 256-1 = 2^8-1 = 0 1111 1111
+  0101 0101
+  set all the other bits to 1 and plus 1
+  */
+  int var = x | (0x55);
+  var = var | (0x55 << 8);
+  var = var | (0x55 << 16);
+  var = var | (0x55 << 24);
+  return !(var+1);
 }
 /* 
  * negate - return -x 
@@ -186,7 +201,11 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  /*
+  x + negate(x) = 0 = 0x00000000
+  => negate(x) = 0-x = 0 + complement(x) = ~x+1;
+  */
+  return (~x) + 1;
 }
 //3
 /* 
