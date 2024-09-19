@@ -218,7 +218,19 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  /*
+  0x30 = 0011 0000
+  0x39 = 0011 1001
+  0000 0001 0010 0011 0100 0101 0110 0111 1000 1001
+   */
+  int var1 = x >> 4;
+  int var2 = !(var1 ^ 3) // verify the 5th and 6th bit
+  int var3 = (x << 27) >> 27; // just keep last 4 bits
+  // 有一个正数 需要位运算判断小于10
+  // 减去10判断是否为负数
+  int var4 = var3 + (~10) + 1; // var3-10
+  int var5 = !((~var4) >> 32);
+  return var2 & var5;
 }
 /* 
  * conditional - same as x ? y : z 
@@ -228,7 +240,10 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  int var1 = !!x;
+  int var2 = y + (~z) + 1;
+  int var3 = var1 << 31 >> 31;
+  return var3 & var2 + z;
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -238,7 +253,8 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+  int var1 = x + (~y) + 1;
+  return (!var1) | (!!(var1 >> 31));
 }
 //4
 /* 
