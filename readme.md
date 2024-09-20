@@ -26,7 +26,7 @@
 
 - [x] int isLessOrEqual(int, int);
 
-- [ ] int logicalNeg(int);
+- [x] int logicalNeg(int); `h`
 
 - [ ] int howManyBits(int);
 
