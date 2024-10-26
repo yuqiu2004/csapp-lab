@@ -210,8 +210,24 @@ int bitMask(int highbit, int lowbit) {
  *   Max ops: 40
  *   Rating: 4
  */
+/*
+ * ? 
+ */
 int bitCount(int x) {
-  return 2;
+  int mask_1 = 0x55 << 8 | 0x55;
+  int mask_2 = 0x33 << 8 | 0x33;
+  int mask_4 = 0x0f << 8 | 0x0f;
+  int mask_8 = 0xff << 16 | 0xff;
+  int mask_16 = ~0 + (1 << 16);
+  mask_1 |= mask_1 << 16;
+  mask_2 |= mask_2 | mask_2 << 16;
+  mask_4 |= mask_4 | mask_4 << 16;
+  x = (x&mask_1) + ((x>>1)&mask_1);
+  x = (x&mask_2) + ((x>>2)&mask_2);
+  x = (x&mask_4) + ((x>>4)&mask_4);
+  x = (x&mask_8) + ((x>>8)&mask_8);
+  x = (x&mask_16) + ((x>>16)&mask_16);
+  return x;
 }
 /* 
  * TMax - return maximum two's complement integer 
