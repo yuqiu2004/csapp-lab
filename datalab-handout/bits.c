@@ -166,6 +166,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
+  //
   return 2;
 }
 /* 
