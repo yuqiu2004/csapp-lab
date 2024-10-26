@@ -224,7 +224,7 @@ int isAsciiDigit(int x) {
   0000 0001 0010 0011 0100 0101 0110 0111 1000 1001
    */
   int var1 = x >> 4;
-  int var2 = !(var1 ^ 3) // verify the 5th and 6th bit
+  int var2 = !(var1 ^ 3); // verify the 5th and 6th bit
   int var3 = (x << 27) >> 27; // just keep last 4 bits
   // 有一个正数 需要位运算判断小于10
   // 减去10判断是否为负数
@@ -240,6 +240,7 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
+  // solution: x*y + (1-x)*z = x*(y-z) + z
   int var1 = !!x;
   int var2 = y + (~z) + 1;
   int var3 = var1 << 31 >> 31;
@@ -253,6 +254,7 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
+  // solution: 两者做差 在判断是否为负数或0
   int var1 = x + (~y) + 1;
   return (!var1) | (!!(var1 >> 31));
 }
@@ -266,6 +268,7 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
+  // solution:判断负数的情况 正数转换为负数
   int var1 = (x >> 31) & 1;
   int var2 = ((~x + 1) >> 31) & 1;
   return var1 | var2;
