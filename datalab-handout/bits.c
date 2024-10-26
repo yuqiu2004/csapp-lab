@@ -176,7 +176,7 @@ int bitXor(int x, int y) {
  *   Rating: 2
  */
 int copyLSB(int x) {
-  return 2;
+  return (x&1)<<31>>31;
 }
 /* 
  * isEqual - return 1 if x == y, and 0 otherwise 
@@ -186,7 +186,7 @@ int copyLSB(int x) {
  *   Rating: 2
  */
 int isEqual(int x, int y) {
-  return 2;
+  return !(x + ~y + 1);
 }
 /* 
  * bitMask - Generate a mask consisting of all 1's 
@@ -199,7 +199,9 @@ int isEqual(int x, int y) {
  *   Rating: 3
  */
 int bitMask(int highbit, int lowbit) {
-  return 2;
+  int var1 = (~0) << lowbit;
+  int var2 = ~((~0) << highbit << 1);
+  return var1 & var2;
 }
 /*
  * bitCount - returns count of number of 1's in word
