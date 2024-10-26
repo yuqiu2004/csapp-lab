@@ -166,7 +166,7 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-  return 2;
+  return (~x) & (~y);
 }
 /* 
  * copyLSB - set all bits of result to least significant bit of x
