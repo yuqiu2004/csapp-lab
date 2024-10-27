@@ -309,7 +309,7 @@ int isLess(int x, int y) {
  */
 int absVal(int x) {
   int neg = ~x + 1;
-  return 0;
+  return (~(x >> 31) & x) + (~(neg >> 31) & neg);
 }
 /*
  * isPower2 - returns 1 if x is a power of 2, and 0 otherwise
@@ -320,7 +320,8 @@ int absVal(int x) {
  *   Rating: 4
  */
 int isPower2(int x) {
-  return 2;
+  int mask_x = x & (~x + 1);
+  return !((x ^ mask_x) | (!x) | (x >> 31));
 }
 /* 
  * float_neg - Return bit-level equivalent of expression -f for
