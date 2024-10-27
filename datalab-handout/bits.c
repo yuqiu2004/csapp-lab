@@ -257,14 +257,14 @@ int isNonNegative(int x) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-    // ++- or --+
-    int sum = x + y;
-    int var1 = (x >> 31) | 0;
-    int var2 = (y >> 31) | 0;
-    int var3 = (sum >> 31) | 0;
-    int ret1 = !var1 & !var2 & var3;
-    int ret2 = var1 & var2 & !(var3);
-    return !(ret1 | ret2);
+  // ++- or --+
+  int sum = x + y;
+  int var1 = x >> 31;
+  int var2 = y >> 31;
+  int var3 = sum >> 31;
+  int ret1 = !var1 & !var2 & var3;
+  int ret2 = var1 & var2 & !(var3);
+  return !(ret1 | ret2);
 }
 /* 
  * rempwr2 - Compute x%(2^n), for 0 <= n <= 30
@@ -275,13 +275,13 @@ int addOK(int x, int y) {
  *   Rating: 3
  */
 int rempwr2(int x, int n) {
-    int s=x>>31;//x为正数就是全0,x为负数就是全1
-    int mask;
-    int ans;
-    x=(x^s)+(s&0x1);//x为负数的时候就是按位取反+1;
-    mask=(1<<n)+(~0);
-    ans=((x&mask)^s)+(s&0x1);//同上
-    return ans;
+  int s=x>>31;//x为正数就是全0,x为负数就是全1
+  int mask;
+  int ans;
+  x=(x^s)+(s&0x1);//x为负数的时候就是按位取反+1;
+  mask=(1<<n)+(~0);
+  ans=((x&mask)^s)+(s&0x1);//同上
+  return ans;
 }
 
 /* 
@@ -292,7 +292,12 @@ int rempwr2(int x, int n) {
  *   Rating: 3
  */
 int isLess(int x, int y) {
-  return 2;
+  int ret1 = ((x + ~y + 1) >> 31) & 1;
+  int var1 = x >> 31;
+  int var2 = y >> 31;
+  int ret2 = ~var1 & var2 & 1;
+  int ret3 = var1 & ~var2 & 1;
+  return (ret1 | ret3) & !ret2;
 }
 /* 
  * absVal - absolute value of x
@@ -303,7 +308,8 @@ int isLess(int x, int y) {
  *   Rating: 4
  */
 int absVal(int x) {
-  return 2;
+  int neg = ~x + 1;
+  return 0;
 }
 /*
  * isPower2 - returns 1 if x is a power of 2, and 0 otherwise
