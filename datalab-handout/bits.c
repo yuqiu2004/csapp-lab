@@ -335,8 +335,14 @@ int isPower2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+  unsigned result;
+  int elsign = uf & 0x7fffffff;
+  int exp = elsign >> 23;
+  if((!(exp ^ 0xff)) && (elsign ^ 0x7f800000)) return uf;
+  result=uf^0x80000000;
+  return result;
 }
+
 /* 
  * float_half - Return bit-level equivalent of expression 0.5*f for
  *   floating point argument f.
@@ -349,7 +355,19 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_half(unsigned uf) {
-  return 2;
+	int sign_, exp_;
+  //  若为INF或NaN，直接返回参数
+  if((uf & 0x7fffffff) >= 0x7f800000)  // exp部分全为1
+    return uf;
+  sign_ = uf & 0x80000000;
+  exp_ =  (uf & 0x7f800000) >> 23;  // 将exp右移frac占的23位，得到exp的值 
+  // 若exp>1，则乘0.5后依旧是规格化数
+  if(exp_ > 1)
+    return (uf & 0x807fffff) | (exp_-1)<<23;
+  // 若exp<=1，则乘0.5后变为非规格化数。此时只处理其frac部分，exp_直接为0
+  if((uf & 0x3) == 0x3)   // 舍入默认“偶数进位规则”，当末尾为11时才需要进位
+    uf += 0x2;
+  return ((uf>>1) & 0x007fffff) | sign_;
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -361,5 +379,29 @@ unsigned float_half(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+  int signbit,highbit,exp,fracbits,flag;
+  unsigned temp,result;
+  if(!x)
+  return x;             
+  signbit=(x>>31)&0x01;
+  if(signbit)
+  x=~x+1;    
+   highbit=0;
+  temp=x;
+  while(!(temp&0x80000000))
+  {
+     temp<<=1;
+     highbit++;
+  }                   
+  temp=temp<<1;
+  exp=127+31-highbit; 
+  fracbits=31-highbit;
+  flag=0;              
+  if((temp&0x1ff)>0x100)
+  flag=1;              
+  if((temp&0x3ff)==0x300)
+  flag=1;            
+  result=(signbit<<31)+(exp<<23)+(temp>>9)+flag;
+  return result;
 }
+
