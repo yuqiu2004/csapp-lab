@@ -236,7 +236,7 @@ int bitCount(int x) {
  *   Rating: 1
  */
 int tmax(void) {
-  return 2;
+  return ~(1<<31);
 }
 /* 
  * isNonNegative - return 1 if x >= 0, return 0 otherwise 
@@ -246,7 +246,7 @@ int tmax(void) {
  *   Rating: 3
  */
 int isNonNegative(int x) {
-  return 2;
+  return !(x>>31);
 }
 /* 
  * addOK - Determine if can compute x+y without overflow
