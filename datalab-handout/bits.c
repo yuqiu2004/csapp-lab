@@ -257,7 +257,14 @@ int isNonNegative(int x) {
  *   Rating: 3
  */
 int addOK(int x, int y) {
-  return 2;
+    // ++- or --+
+    int sum = x + y;
+    int var1 = (x >> 31) | 0;
+    int var2 = (y >> 31) | 0;
+    int var3 = (sum >> 31) | 0;
+    int ret1 = !var1 & !var2 & var3;
+    int ret2 = var1 & var2 & !(var3);
+    return !(ret1 | ret2);
 }
 /* 
  * rempwr2 - Compute x%(2^n), for 0 <= n <= 30
@@ -268,8 +275,15 @@ int addOK(int x, int y) {
  *   Rating: 3
  */
 int rempwr2(int x, int n) {
-    return 2;
+    int s=x>>31;//x为正数就是全0,x为负数就是全1
+    int mask;
+    int ans;
+    x=(x^s)+(s&0x1);//x为负数的时候就是按位取反+1;
+    mask=(1<<n)+(~0);
+    ans=((x&mask)^s)+(s&0x1);//同上
+    return ans;
 }
+
 /* 
  * isLess - if x < y  then return 1, else return 0 
  *   Example: isLess(4,5) = 1.
