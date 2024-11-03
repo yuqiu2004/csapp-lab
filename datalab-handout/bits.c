@@ -338,8 +338,8 @@ unsigned float_neg(unsigned uf) {
   unsigned result;
   int elsign = uf & 0x7fffffff;
   int exp = elsign >> 23;
-  if((!(exp ^ 0xff)) && (elsign ^ 0x7f800000)) return uf;
-  result=uf^0x80000000;
+  if((!(exp ^ 0xff)) && (elsign ^ 0x7f800000)) return uf; // 如果指数全1且尾数全0
+  result=uf^0x80000000; // 符号位取反
   return result;
 }
 
@@ -362,12 +362,12 @@ unsigned float_half(unsigned uf) {
   sign_ = uf & 0x80000000;
   exp_ =  (uf & 0x7f800000) >> 23;  // 将exp右移frac占的23位，得到exp的值 
   // 若exp>1，则乘0.5后依旧是规格化数
-  if(exp_ > 1)
+  if(exp_ > 1) // 如果是规格化数 指数-1等价于除2
     return (uf & 0x807fffff) | (exp_-1)<<23;
   // 若exp<=1，则乘0.5后变为非规格化数。此时只处理其frac部分，exp_直接为0
   if((uf & 0x3) == 0x3)   // 舍入默认“偶数进位规则”，当末尾为11时才需要进位
     uf += 0x2;
-  return ((uf>>1) & 0x007fffff) | sign_;
+  return ((uf>>1) & 0x007fffff) | sign_; // 除2并清除符号位 用符号规整然后返回
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
