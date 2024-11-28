@@ -34,3 +34,6 @@ q # 退出
 
 ```
 *tips*: whu 魔改后的bomb lab `phase_3`中 不是所有的跳转都是有效的 对于`jmpq` 如果跳转地址无效 则不会跳转 而是顺序执行
+
+> lab2 ans is not all right, the dir is just for test
+> it cannot be executed in local
