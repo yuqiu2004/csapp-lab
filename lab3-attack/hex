@@ -1,1 +1,1 @@
- ./hex2raw < ans1 > ans1.raw
+ ./hex2raw < ans2 > raw
