@@ -803,12 +803,12 @@ Disassembly of section .text:
   4017ff:	f3 c3                	repz ret 
 
 0000000000401801 <getbuf>:
-  401801:	48 83 ec 28          	sub    $0x28,%rsp
-  401805:	48 89 e7             	mov    %rsp,%rdi
+  401801:	48 83 ec 28          	sub    $0x28,%rsp # 40个字节
+  401805:	48 89 e7             	mov    %rsp,%rdi  # 从低字节开始读取
   401808:	e8 2d 02 00 00       	call   401a3a <Gets>
   40180d:	b8 01 00 00 00       	mov    $0x1,%eax
   401812:	48 83 c4 28          	add    $0x28,%rsp
-  401816:	c3                   	ret    
+  401816:	c3                   	ret                # 溢出攻击返回地址
 
 0000000000401817 <touch1>:
   401817:	48 83 ec 08          	sub    $0x8,%rsp
@@ -823,7 +823,7 @@ Disassembly of section .text:
 
 0000000000401843 <touch2>:
   401843:	48 83 ec 08          	sub    $0x8,%rsp
-  401847:	89 fe                	mov    %edi,%esi
+  401847:	89 fe                	mov    %edi,%esi    # $edi 参数通过注入填充cookie
   401849:	c7 05 a9 2c 20 00 02 	movl   $0x2,0x202ca9(%rip)        # 6044fc <vlevel>
   401850:	00 00 00 
   401853:	3b 3d ab 2c 20 00    	cmp    0x202cab(%rip),%edi        # 604504 <cookie>
@@ -887,7 +887,7 @@ Disassembly of section .text:
   401918:	48 89 fb             	mov    %rdi,%rbx
   40191b:	c7 05 d7 2b 20 00 03 	movl   $0x3,0x202bd7(%rip)        # 6044fc <vlevel>
   401922:	00 00 00 
-  401925:	48 89 fe             	mov    %rdi,%rsi
+  401925:	48 89 fe             	mov    %rdi,%rsi # 需要注入$rdi
   401928:	8b 3d d6 2b 20 00    	mov    0x202bd6(%rip),%edi        # 604504 <cookie>
   40192e:	e8 66 ff ff ff       	call   401899 <hexmatch>
   401933:	85 c0                	test   %eax,%eax
